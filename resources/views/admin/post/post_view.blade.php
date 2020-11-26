@@ -5,12 +5,12 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Category List</h1>
+          <h1 class="m-0 text-dark">Post List</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{route('website')}}">Home</a></li>
-            <li class="breadcrumb-item active">Category List</li>
+            <li class="breadcrumb-item active">Post List</li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -26,8 +26,8 @@
               <div class="card">
                   <div class="card-header">
                     <div class="d-flex justify-content-between">
-                      <h3 class="card-title">Tag List</h3>
-                      <a href="{{route('tag.create')}}" class="btn btn-success"><i class="fa fa-plus-circle"></i>Create Tag</a>
+                      <h3 class="card-title">Post List</h3>
+                      <a href="{{route('post.create')}}" class="btn btn-success"><i class="fa fa-plus-circle"></i>Create Post</a>
                   </div>
                   </div>
                   <!-- /.card-header -->
@@ -36,29 +36,31 @@
                       <thead>
                         <tr>
                           <th style="width: 10px">#</th>
-                          <th>Name</th>
-                          <th>Slug</th>
-                          <th>Post Count</th>
+                          <th>Title</th>
+                          <th>Image</th>
+                          <th>Category</th>
+                          <th>Authtor</th>
                           <th style="width: 40px">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                          @if($tags->count())
-                          @foreach ($tags as $key=> $tag)
+                          @if($posts->count())
+                          @foreach ($posts as $key=> $post)
                           <tr>
                             <td>{{$key+1}}</td>
-                            <td>{{$tag->name}}</td>
-                            <td>{{$tag->slug}}</td>
-                            <td>{{$tag->id}}</td>
+                            <td>{{$post->title}}</td>
+                            <td><img src="{{asset('storage/post/'.$post->image)}}" width="60px";height='60px' alt=""></td>
+                            <td>{{$post->category->name}} </td>
+                            <td>{{$post->user->name}} </td>
                             <td class="d-flex">
-                                <a href="{{route('tag.edit',$tag->id)}} " class="btn btn-primary mr-1" title="Edit"><i class="fa fa-user-edit"></i></a>
-                                <a href="{{route('tag.delete',$tag->id)}} " id="delete" class="btn btn-danger mr-1" title="Delete"><i class="fa fa-trash"></i></a>
+                                <a href="{{route('post.edit',$post->id)}} " class="btn btn-primary mr-1" title="Edit"><i class="fa fa-user-edit"></i></a>
+                                <a href="{{route('post.delete',$post->id)}} " id="delete" class="btn btn-danger mr-1" title="Delete"><i class="fa fa-trash"></i></a>
                             </td>
                           </tr>
                           @endforeach
                           @else
-                          <td colspan="5">
-                              <h5 class="text-center">No Tag Found</h5>
+                          <td colspan="6">
+                              <h5 class="text-center">No Post Found</h5>
                           </td>
                           @endif
                       </tbody>

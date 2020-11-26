@@ -36,12 +36,21 @@ Route::get('delete/{id}', 'CategoryController@destroy')->name('category.delete')
 });
 //tag route start from here
 Route::prefix('tag')->group(function () {
-    Route::get('view', 'TagController@index')->name('tag.view');
-    Route::get('create', 'TagController@create')->name('tag.create');
-    Route::post('store', 'TagController@store')->name('tag.store');
-    Route::get('edit/{id}', 'TagController@edit')->name('tag.edit');
-    Route::post('update/{id}', 'TagController@update')->name('tag.update');
-    Route::get('delete/{id}', 'TagController@destroy')->name('tag.delete');
-    });
+Route::get('view', 'TagController@index')->name('tag.view');
+Route::get('create', 'TagController@create')->name('tag.create');
+Route::post('store', 'TagController@store')->name('tag.store');
+Route::get('edit/{id}', 'TagController@edit')->name('tag.edit');
+Route::post('update/{id}', 'TagController@update')->name('tag.update');
+Route::get('delete/{id}', 'TagController@destroy')->name('tag.delete');
+});
+//tag route start from here
+Route::prefix('post')->group(function () {
+Route::get('view', 'PostController@index')->name('post.view');
+Route::get('create', 'PostController@create')->name('post.create');
+Route::post('store', 'PostController@store')->name('post.store');
+Route::get('edit/{id}', 'PostController@edit')->name('post.edit');
+Route::post('update/{id}', 'PostController@update')->name('post.update');
+Route::get('delete/{id}', 'PostController@destroy')->name('post.delete');
+});
 
 

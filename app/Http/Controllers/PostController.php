@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Category;
 use App\Model\Post;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Session;
+use Auth;
+use Carbon\Carbon;
+
 
 class PostController extends Controller
 {
@@ -27,7 +31,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.post.post_create');
+        $data['categories']=Category::all();
+        return view('admin.post.post_create',$data);
     }
 
     /**
@@ -39,13 +44,51 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|unique:posts,name',
+            'title' => 'required|unique:posts,title',
+            'image' => 'required',
+            'description' => 'required',
+            'category_id' => 'required',
         ]);
-        $StoreCategory=new Post();
-        $StoreCategory->name=$request->name;
-        $StoreCategory->slug=Str::slug($request->name, '-');
-        $StoreCategory->description=$request->description;
-        $StoreCategory->save();
+
+        // $StorePost=Post::all();
+        // $StorePost->title=$request->title;
+        // $StorePost->slug=Str::slug($request->title);
+        // $StorePost->description=$request->description;
+        // $StorePost->category_id=$request->category_id;
+        // $StorePost->user_id=$request->auth()->user()->id;
+        // $StorePost->published_at=$request->Carbon::now();
+        // if($request->hasFile('image')){
+        //     $file=$request->file('image');
+        //     $extension=$file->getClientOriginalExtension();
+        //     $newImage=time().'.'.$extension;
+        //     $file->move('storage/post/',$newImage);
+        //     $StorePost->image=$newImage;
+        // }else{
+        //     return $request;
+        //     $StorePost->image='';
+        // }
+        // $StorePost->save();
+        $StorePost = Post::create([
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'description' => $request->description,
+            'image' => $request->image,
+            'category_id' => $request->category_id,
+            'user_id' => auth()->user()->id,
+            'published_at' => Carbon::now(),
+        ]);
+
+        if($request->hasFile('image')){
+            $file=$request->file('image');
+            $extension=$file->getClientOriginalExtension();
+            $newImage=time().'.'.$extension;
+            $file->move('storage/post/',$newImage);
+            $StorePost->image=$newImage;
+        }else{
+            return $request;
+            $StorePost->image='';
+        }
+        $StorePost->save();
         Session::flash('success','Post Created Successfully');
         return redirect()->back();
 
@@ -71,6 +114,7 @@ class PostController extends Controller
     public function edit(Post $post,$id)
     {
         $data['EditPost']=Post::find($id);
+        $data['categories']=Category::all();
         return view('admin.post.post_edit',$data);
     }
 
@@ -85,18 +129,31 @@ class PostController extends Controller
     {
 
         $validatedData = $request->validate([
-            'name' => "required|unique:posts,name,$post->name",
+            'title' => 'required|unique:posts,title',
+            'description' => 'required',
+            'category_id' => 'required',
         ]);
-
-        $UpdateCategory=Post::find($id);
-        $UpdateCategory->name=$request->name;
-        $UpdateCategory->slug=Str::slug($request->name, '-');
-        $UpdateCategory->description=$request->description;
-        $UpdateCategory->save();
+        $updatePost=Post::find($id);
+        $updatePost->title=$request->title;
+        $updatePost->slug=Str::slug($request->title);
+        $updatePost->category_id=$request->category_id;
+        if($request->hasFile('image')){
+            $file=$request->file('image');
+            $extension=$file->getClientOriginalExtension();
+            $newImage=time().'.'.$extension;
+            $file->move('storage/post/',$newImage);
+            $updatePost->image=$newImage;
+        }else{
+            return $request;
+            $updatePost->image='';
+        }
+        $updatePost->save();
         Session::flash('success','Post Updated Successfully');
         return redirect()->back();
 
     }
+
+
 
     /**
      * Remove the specified resource from storage.

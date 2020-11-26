@@ -177,56 +177,12 @@
           <a href="#" class="d-block">Mh Akash</a>
         </div>
       </div>
-
       <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Starter Pages
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Active Page</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Inactive Page</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <a href="{{route('category.view')}} " class="nav-link bg-dark active">
-                <i class="nav-icon fas fa-tags"></i>
+     <nav class="mt-2">
+      @include('includes.sidebar_menu')
+    </nav>
+    <!-- /.sidebar-menu -->
 
-                <p>
-                   Category
-                </p>
-              </a>
-          </li>
-          <li>
-            <a href="{{route('tag.view')}} " class="nav-link bg-dark active">
-                <i class="nav-icon fas fa-tags"></i>
-
-                <p>
-                   Tag
-                </p>
-              </a>
-          </li>
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
   </aside>
@@ -317,6 +273,30 @@
           })
                   });
               });
+</script>
+<script>
+    //Image Show Before Upload Start
+$(document).ready(function(){
+  $('input[type="file"]').change(function(e){
+      var fileName = e.target.files[0].name;
+      if (fileName){
+          $('#image').html(fileName);
+      }
+  });
+});
+
+function showImage(data, imgId){
+  if(data.files && data.files[0]){
+      var obj = new FileReader();
+
+      obj.onload = function(d){
+          var image = document.getElementById(imgId);
+          image.src = d.target.result;
+      }
+      obj.readAsDataURL(data.files[0]);
+  }
+}
+//Image Show Before Upload End
 </script>
 </body>
 </html>
