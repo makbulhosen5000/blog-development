@@ -45,9 +45,9 @@
                                               <label for="exampleInputEmail1">Category Name</label>
                                               <input type="name" name="name" value="{{$EditTag->name}} " class="form-control" id="exampleInputEmail1" required>
                                             </div>
-                                             <div class="form-group">
-                                              <label for="exampleInputPassword1">Description</label>
-                                              <textarea class="form-control" name="description" rows="5">{{$EditTag->description}}</textarea>
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">Description</label>
+                                                <textarea type="text" class="form-control" name="description" id="description" rows="5">{{$EditTag->description}}</textarea>
                                             </div>
                                             </div>
                                           </div>

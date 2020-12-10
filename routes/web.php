@@ -25,6 +25,17 @@ Route::get('home', 'HomeController@index')->name('home');
 Auth::routes();
 // Route::get('home', 'CategoryController@index')->name('home');
 
+//frontend route start from here
+route::get('/','FrontEndController@home')->name('website');
+route::get('/about','FrontEndController@about')->name('about');
+route::get('/contact','FrontEndController@contact')->name('contact');
+route::get('/post','FrontEndController@post')->name('post');
+
+
+
+
+
+//backend route start from here
 //category route start from here
 Route::prefix('category')->group(function () {
 Route::get('view', 'CategoryController@index')->name('category.view');
@@ -49,6 +60,7 @@ Route::get('view', 'PostController@index')->name('post.view');
 Route::get('create', 'PostController@create')->name('post.create');
 Route::post('store', 'PostController@store')->name('post.store');
 Route::get('edit/{id}', 'PostController@edit')->name('post.edit');
+Route::get('show', 'PostController@show')->name('post.show');
 Route::post('update/{id}', 'PostController@update')->name('post.update');
 Route::get('delete/{id}', 'PostController@destroy')->name('post.delete');
 });

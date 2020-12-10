@@ -46,10 +46,10 @@
       <li>
         <a href="{{route('post.view')}} " class="nav-link bg-dark active">
             <i class="nav-icon fas fa-pen-square"></i>
-
             <p>
                Post
             </p>
           </a>
       </li>
+      <a href="{{route('website')}}" class="btn btn-warning text-dark mt-5">Website Home</a>
     </ul>

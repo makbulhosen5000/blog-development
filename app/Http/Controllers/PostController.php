@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Model\Category;
 use App\Model\Post;
+use App\Model\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Session;
@@ -31,7 +32,9 @@ class PostController extends Controller
      */
     public function create()
     {
+
         $data['categories']=Category::all();
+        $data['tags']=Tag::all();
         return view('admin.post.post_create',$data);
     }
 
@@ -43,6 +46,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
         $validatedData = $request->validate([
             'title' => 'required|unique:posts,title',
             'image' => 'required',
@@ -77,6 +81,7 @@ class PostController extends Controller
             'user_id' => auth()->user()->id,
             'published_at' => Carbon::now(),
         ]);
+        $StorePost->tags()->attach($request->tags);
 
         if($request->hasFile('image')){
             $file=$request->file('image');
@@ -102,7 +107,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        $data['showPosts']=Post::all();
+        $data['showTags']=Tag::all();
+        return view('admin.post.post_show',$data);
     }
 
     /**
@@ -115,33 +122,28 @@ class PostController extends Controller
     {
         $data['EditPost']=Post::find($id);
         $data['categories']=Category::all();
+        $data['tags']=Tag::all();
         return view('admin.post.post_edit',$data);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Mode\Post  $post
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Post $post,$id)
     {
 
         $validatedData = $request->validate([
-            'title' => 'required|unique:posts,title',
+            'title' => 'required',
             'description' => 'required',
             'category_id' => 'required',
         ]);
         $updatePost=Post::find($id);
         $updatePost->title=$request->title;
         $updatePost->slug=Str::slug($request->title);
+        $updatePost->description=$request->description;
         $updatePost->category_id=$request->category_id;
+        $updatePost->tags()->sync($request->tags);
         if($request->hasFile('image')){
             $file=$request->file('image');
             $extension=$file->getClientOriginalExtension();
             $newImage=time().'.'.$extension;
-            $file->move('storage/post/',$newImage);
+            $file->move('storage/image/',$newImage);
             $updatePost->image=$newImage;
         }else{
             return $request;

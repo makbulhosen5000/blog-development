@@ -24,6 +24,12 @@ class CreatePostsTable extends Migration
             $table->timestamp('published_at');
             $table->timestamps();
         });
+        Schema::create('post_tag', function (Blueprint $table) {
+            $table->id();
+            $table->integer('post_id');
+            $table->integer('tag_id');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -34,5 +40,6 @@ class CreatePostsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('posts');
+        Schema::dropIfExists('post_tag');
     }
 }

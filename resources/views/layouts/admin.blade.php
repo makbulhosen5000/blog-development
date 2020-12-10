@@ -13,9 +13,15 @@
   <link rel="stylesheet" href="{{asset('public')}}/assets/admin/plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('/')}}/public/assets/admin/dist/css/adminlte.min.css">
+
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  {{-- summernote editor --}}
+
+
+  @yield('style')
+
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -217,6 +223,7 @@
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
+{{-- summernote editor --}}
 
 <!-- jQuery -->
 <script src="{{asset('public')}}/assets/admin/plugins/jquery/jquery.min.js"></script>
@@ -225,6 +232,7 @@
 <!-- AdminLTE App -->
 <script src="{{asset('/')}}/public/assets/admin/dist/js/adminlte.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+@yield('script')
 <script>
     @if(Session::has('success'))
     toastr.success("{{Session::get('success')}}");
@@ -274,29 +282,42 @@
                   });
               });
 </script>
+
+
+<!-- Image Show Before Upload Start -->
 <script>
-    //Image Show Before Upload Start
-$(document).ready(function(){
-  $('input[type="file"]').change(function(e){
-      var fileName = e.target.files[0].name;
-      if (fileName){
-          $('#image').html(fileName);
-      }
-  });
-});
+    $(document).ready(function(){
+        $('input[type="file"]').change(function(e){
+            var fileName = e.target.files[0].name;
+            if (fileName){
+                $('#image').html(fileName);
+            }
+        });
+    });
 
-function showImage(data, imgId){
-  if(data.files && data.files[0]){
-      var obj = new FileReader();
+    function showImage(data, imgId){
+        if(data.files && data.files[0]){
+            var obj = new FileReader();
 
-      obj.onload = function(d){
-          var image = document.getElementById(imgId);
-          image.src = d.target.result;
-      }
-      obj.readAsDataURL(data.files[0]);
-  }
-}
-//Image Show Before Upload End
+            obj.onload = function(d){
+                var image = document.getElementById(imgId);
+                image.src = d.target.result;
+            }
+            obj.readAsDataURL(data.files[0]);
+        }
+    }
+
+</script>
+
+{{-- summernote text editor --}}
+<script>
+    <div id="description"></div>
+      $('#description').summernote({
+        placeholder: 'Hello Bootstrap 4',
+        tabsize: 2,
+        height: 100
+      });
+    </script>
 </script>
 </body>
 </html>

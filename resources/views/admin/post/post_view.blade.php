@@ -9,7 +9,7 @@
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{route('website')}}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{route('website')}}">Website Home</a></li>
             <li class="breadcrumb-item active">Post List</li>
           </ol>
         </div><!-- /.col -->
@@ -37,8 +37,10 @@
                         <tr>
                           <th style="width: 10px">#</th>
                           <th>Title</th>
+
                           <th>Image</th>
                           <th>Category</th>
+                          <th>Tag</th>
                           <th>Authtor</th>
                           <th style="width: 40px">Action</th>
                         </tr>
@@ -49,10 +51,17 @@
                           <tr>
                             <td>{{$key+1}}</td>
                             <td>{{$post->title}}</td>
+
                             <td><img src="{{asset('storage/post/'.$post->image)}}" width="60px";height='60px' alt=""></td>
                             <td>{{$post->category->name}} </td>
+                            <td>
+                                @foreach ($post->tags as $tag)
+                                <span class="badge badge-primary">{{$tag->name}}</span>
+                                @endforeach
+                            </td>
                             <td>{{$post->user->name}} </td>
                             <td class="d-flex">
+                                <a href="{{route('post.show')}} " class="btn btn-success mr-1" title="Show"><i class="fa fa-eye"></i></a>
                                 <a href="{{route('post.edit',$post->id)}} " class="btn btn-primary mr-1" title="Edit"><i class="fa fa-user-edit"></i></a>
                                 <a href="{{route('post.delete',$post->id)}} " id="delete" class="btn btn-danger mr-1" title="Delete"><i class="fa fa-trash"></i></a>
                             </td>
